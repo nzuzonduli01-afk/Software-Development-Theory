@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Programming Languages | Learn & Explore</title>
+<style>
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth; 
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  background-color: #f9fafb;
+  color: #222;
+}
+
+header {
+  background-color: #0d1b2a;
+  color: #fff;
+  text-align: center;
+  padding: 1rem 1rem;
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; 
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+header h1 {
+  font-size: 2rem;
+  letter-spacing: 1px;
+}
+
+/* Hamburger for mobile */
+.hamburger {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+  user-select: none;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+nav a {
+  color: #ffd700;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: #fff;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn {
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #1b263b;
+  min-width: 160px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  border-radius: 5px;
+  overflow: hidden;
+  z-index: 100;
+  top: 100%;
+  left: 0;
+}
+
+.dropdown-content a {
+  color: #fff;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  display: block;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.dropdown-content a:hover {
+  background-color: #ffd700;
+  color: #0d1b2a;
+}
+
+.dropdown:hover .dropdown-content,
+.dropdown:focus-within .dropdown-content,
+.dropdown:active .dropdown-content {
+  display: block;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  grid-template-areas: "sidebar main";
+  gap: 1.5rem;
+  padding: 2rem;
+  padding-top: 120px;
+  max-width: 1300px;
+  margin: auto;
+}
+
+aside {
+  grid-area: sidebar;
+  background-color: #1b263b;
+  color: #fff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  position: sticky; 
+  top: 150px; 
+  height: fit-content;
+  min-height: 500px; 
+}
+
+aside h2 {
+  color: #ffd700;
+  margin-bottom: 1rem;
+}
+
+aside ul {
+  list-style: none;
+}
+
+aside li {
+  margin-bottom: 0.8rem;
+}
+
+aside a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+aside a:hover {
+  color: #ffd700;
+}
+
+main {
+  grid-area: main;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  margin-top: 40px;
+}
+
+main h2 {
+  color: #0d1b2a;
+  margin-bottom: 1rem;
+}
+
+main img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+footer {
+  background-color: #0d1b2a;
+  color: #fff;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 2rem;
+}
+
+/* -------------------- MOBILE STYLES -------------------- */
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .header h1 {
+    font-size: 1.2rem;
+  }
+
+  
+  aside {
+    position: fixed;
+    top: 195px; 
+    left: 0;
+    width: 250px;
+    height: calc(100% - 195px); 
+    padding: 2rem;
+    z-index: 999;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  aside.show {
+    transform: translateX(0);
+  }
+
+  
+  main {
+    margin-top: 195px; 
+  }
+
+  main img {
+    max-height: 300px;
+    object-fit: cover;
+  }
+}
+
+
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Explore Programming Languages</h1>
+  <span class="hamburger" onclick="toggleSidebar()">☰</span>
+  <nav>
+    <a href="#">About</a>
+    <div class="dropdown">
+      <a href="#" class="dropbtn">Languages</a>
+      <div class="dropdown-content">
+        <a href="#html-section">HTML</a>
+        <a href="#css-section">CSS</a>
+        <a href="#js-section">JavaScript</a>
+        <a href="#python-section">Python</a>
+      </div>
+    </div>
+    <div class="dropdown">
+      <a href="#" class="dropbtn">Tutorials</a>
+      <div class="dropdown-content">
+        <a href="https://www.w3schools.com/html/default.asp" target="_blank">HTML</a>
+        <a href="https://www.w3schools.com/css/default.asp" target="_blank">CSS</a>
+        <a href="https://www.w3schools.com/js/default.asp" target="_blank">JavaScript</a>
+        <a href="https://www.w3schools.com/python/default.asp" target="_blank">Python</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container">
+  <aside id="sidebar">
+    <h2>Languages Covered</h2>
+    <ul>
+      <li><a href="#">About</a></li>
+      <li><a href="#html-section">HTML</a></li>
+      <li><a href="#css-section">CSS</a></li>
+      <li><a href="#js-section">JavaScript</a></li>
+      <li><a href="#python-section">Python</a></li>
+    </ul>
+  </aside>
+
+
+    <main>
+      <h1>About Programming Languages</h1>
+      <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80" alt="Programming languages concept">
+      <p>Programming languages are the foundation of modern technology. From building websites to designing artificial intelligence, these languages enable developers to bring ideas to life through logic and creativity.
+        Programming languages typically allow software to be written in a human readable manner.
+        Execution of a program requires an implementation. There are two main approaches for implementing a programming language compilation, where programs are compiled ahead-of-time to machine code, and interpretation, where programs are directly executed. 
+        In addition to these two extremes, some implementations use hybrid approaches such as just-in-time compilation and bytecode interpreters.
+        The design of programming languages has been strongly influenced by computer architecture, with most imperative languages designed around the ubiquitous von Neumann architecture.
+        While early programming languages were closely tied to the hardware, modern languages often hide hardware details via abstraction in an effort to enable better software with less effort.</p>
+      <br><br><br>
+
+      <h2 id="html-section">HTML</h2>
+      <img src="https://images.unsplash.com/photo-1505685296765-3a2736de412f?auto=format&fit=crop&w=1200&q=80" alt="HTML code on screen">
+      <p><strong>HTML (HyperText Markup Language)</strong> forms the structure of all web pages. It defines elements like headings, paragraphs, images, and links.
+        HTML is not technically a programming language in the traditional sense because it does not perform computations or create logic like languages such as Python or Java. 
+        Instead, it is a markup language that defines the structure and presentation of web content
+        Using HTML, developers can create web pages by organizing text, images, links, forms, tables, and other elements into a readable format that web browsers can display.
+        <br><br>
+
+        <strong>While HTML defines the structure of a webpage, it is often combined with:</strong>
+        <li>CSS (Cascading Style Sheets) to style and format the content (colors, fonts, layout).</li>
+        <li>JavaScript to add interactive features and dynamic behavior, such as form validation or animations.</li>
+        <br><br>
+
+        <strong>Key features of HTML include:</strong>
+        <li>Organizes web content into headings, paragraphs, lists, tables, forms, and links.</li>
+        <li>Supports embedding images, videos, and multimedia elements.</li>
+        <li>Allows linking to other pages and resources using hypertext links.</li>
+        <li>Provides semantic tags to improve accessibility and SEO.</li></p>
+        
+      <br><br><br>
+
+      <h2 id="css-section">CSS</h2>
+      <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1200&q=80" alt="CSS styling">
+      <p><strong>CSS (Cascading Style Sheets)</strong> gives life to HTML with styling. It controls colors, fonts, layouts, and animations, ensuring websites are visually appealing and responsive across all devices.
+        CSS, or Cascading Style Sheets, is a core technology used in web development to control the presentation and layout of HTML documents. 
+        While HTML provides the structure and content of a webpage, CSS defines its visual style, including colors, fonts, spacing, and positioning of elements.
+        <br><br>
+
+        <strong>Key Features of CSS</strong>
+        <li>Separation of Content and Presentation: CSS allows developers to separate the design from the content. This makes maintenance easier and enables a consistent look across multiple pages of a website.</li>
+        <li>Cascading Priority: The term "Cascading" refers to the way CSS rules are applied in a hierarchy. If multiple styles target the same element, the most specific rule takes priority.</li>
+        <li>Selectors: CSS uses selectors to target HTML elements and apply styles.</li>
+        <li>Box Model: Every element in CSS is treated as a rectangular box that consists of Content, Padding,Border, Margin, etc...</li>
+        <li>Responsive Design: CSS allows web pages to adapt to different screen sizes using flexible layouts, media queries, and grid or flexbox systems.</li>
+        <br>
+
+        <strong>Summary</strong><br>
+        CSS is essential for creating visually appealing and user-friendly websites. It provides full control over layout, design, and responsiveness, ensuring that web pages look consistent and professional across devices and browsers. 
+        By learning CSS, developers can enhance the aesthetics and usability of web content efficiently.</p>
+      <br><br><br>
+
+      <h2 id="js-section">JavaScript</h2>
+      <img src="https://images.unsplash.com/photo-1551033406-611cf9a28f67?auto=format&fit=crop&w=1200&q=80" alt="JavaScript development">
+      <p><strong>JavaScript</strong> adds interactivity and logic to websites. From dynamic menus and popups to real-time updates, JavaScript powers the functionality of modern web applications.
+      JavaScript is a high-level, dynamic, and interpreted programming language primarily used for web development. It is an essential part of the "web trio" along with HTML and CSS and is supported by all modern web browsers. Initially developed to make websites interactive, JavaScript has now grown to support backend development, mobile applications, and even desktop software via platforms like Node.js and Electron.
+      <br><br>
+
+      <strong>Key Features of JavaScript:</strong>
+      <li>Client-Side Scripting: JavaScript runs in the user's browser, allowing real-time manipulation of web page content and interactive features such as dropdown menus, forms validation, and dynamic content updates.</li>
+      <li>Server-Side Development: With Node.js, JavaScript can run on the server, enabling you to handle requests, connect to databases, and build scalable back-end systems in a single language.</li>
+      <li>Event-Driven Programming: JavaScript responds to user actions like clicks, input changes, or other events, making it ideal for interactive applications.</li>
+      <li>Lightweight and Interpreted: JavaScript is executed line-by-line by the browser engine without a compilation step, which makes development faster and easier.</li>
+      <li>Versatile Syntax: It supports object-oriented, functional, and imperative programming paradigms, providing flexibility in coding style.</li>
+      <li>Wide Ecosystem: JavaScript has a huge ecosystem with countless frameworks and libraries, like React, Angular, Vue, Express, and utilities via npm (Node Package Manager).
+      <br><br>
+
+      <strong>Applications of JavaScript</strong>
+      <li>Web Front-End: Dynamic webpages, forms, animations, SPA (Single Page Applications)</li>
+      <li>Server-Side: APIs, back-end services, and real-time applications via Node.js</li>
+      <li>Mobile Apps: Using frameworks like React Native</li>
+      <li>Desktop Apps: Using Electron to build cross-platform applications</li>
+      <li>Game Development: Browser games using HTML5 canvas or WebGL</li>
+      </li>
+     <br>
+
+       <strong>Summary</strong><br>
+      JavaScript is a versatile, high-demand language crucial for modern software development, particularly for creating interactive web applications.
+      Its universality, ease of learning, and wide ecosystem make it one of the most popular programming languages in the world.</p>
+      <br><br><br>
+
+      <h2 id="python-section">Python</h2>
+      <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1200&q=80" alt="Python programming">
+      <p><strong>Python</strong> is known for its simplicity and versatility. Used in web development, data science, AI, and automation, Python has become one of the most popular languages in the world.
+        Python is a high-level, interpreted, and general-purpose programming language known for its ease of use and readability. It was created by Guido van Rossum and first released in 1991. Python emphasizes simplicity and clarity, making it particularly popular among beginners and professionals alike.
+        <br><br>
+        
+        <strong>Key Features of Python</strong>
+        <li>High-Level Language: Python abstracts most of the complex details of the computer's operations, allowing developers to write programs without needing to manage memory or hardware explicitly.</li>
+        <li>Interpreted Language: Python code is executed line by line using an interpreter, which makes debugging easier and allows for rapid development and testing.</li>
+        <li>Dynamic Typing: You do not need to declare variable types explicitly. The interpreter determines the data type at runtime:</li>
+        <li>Readable and Maintainable Code: Python uses a clean and readable syntax with indentation, which enhances code maintainability.</li>
+        <li>Extensive Standard Library: Python comes with a large collection of modules and packages for diverse tasks such as web development, data analysis, machine learning, automation, and more.</li>
+        <li>Cross-Platform: Python runs on Windows, macOS, Linux, and other platforms without requiring major changes to the code.</li>
+        <li>Community Support: Python has a large active community, leading to a wealth of learning resources, third-party libraries, and frameworks such as Django, Flask, NumPy, Pandas, and TensorFlow.</li>
+        <br><br>
+
+        <strong>Applications of Python</strong>
+        <li>Web Development: Using frameworks like Django and Flask</li>
+        <li>Data Science and Machine Learning: With libraries like Pandas, NumPy, Scikit-learn, and TensorFlow</li>
+        <li>Automation and Scripting: For automating repetitive tasks and system administration</li>
+        <li>Scientific Computing: Used in research for simulations and data analysis</li>
+        <li>Game Development: Using libraries like Pygame</li>
+        <br>
+
+        <strong>Summary</strong><br>
+        Python is a versatile, beginner-friendly, and powerful programming language suitable for a wide range of applications, from simple scripts to complex machine learning models. 
+        Its simplicity, readability, and active community make it one of the most preferred languages for new and experienced programmers alike.
+        </p>
+        <br><br>
+
+        <em>References</em>
+        <li><a href="https://en.wikipedia.org/wiki/Programming_language" target="_blank">Programming language - Wikipedia</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank">HTML - MDN Web Docs</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS" target="_blank">CSS - MDN Web Docs</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">JavaScript - MDN Web Docs</a></li>
+        <li><a href="https://www.python.org/doc/" target="_blank">Python Documentation</a></li>
+    </main>
+  </div>
+
+  <footer>
+    <p>Learn about Programming languages: HTML, CSS, JavaScript & Python<br> 
+    Created by Nzuzo Nduli<br>
+    @LinkedIn: <a href="https://www.linkedin.com/in/nzuzo-nduli-351725245/" target="_blank">Nzuzo Nduli</a></p>
+  </footer>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('show');
+}
+
+const sidebarLinks = document.querySelectorAll('#sidebar a');
+sidebarLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('sidebar').classList.remove('show');
+  });
+});
+</script>
+
+</body>
+</html>
