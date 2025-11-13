@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Quiz</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #eeeeeea2;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #0d1b2a;
+      color: rgb(255, 255, 255);
+      width: 100%;
+      text-align: center;
+      padding: 15px 0;
+      font-size: 1.7em;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    header h6 {
+      font-weight: normal;
+      font-size: 0.8em;
+      margin-top: 5px;
+      color: rgb(233, 191, 52);
+    }
+
+    .quiz-container {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      padding: 20px;
+      width: 700px;
+      text-align: left;
+      margin-top: auto;
+      margin-bottom: auto;
+      word-wrap: break-word;
+    }
+
+    h2 {
+      margin-bottom: 16px;
+    }
+
+    .option {
+      text-align: left;
+      margin: 8px 0;
+    }
+
+    .buttons {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #0279a8;
+      color: white;
+      cursor: pointer;
+      margin: 5px;
+      display: inline-block;
+    }
+
+    button:hover { 
+        background-color: #03a2e0; 
+    }
+
+    #prevBtn {
+        background-color: #777;
+    }
+
+    #prevBtn:hover {
+        background-color: #999;
+    }
+
+    .score {
+      font-size: 1.3em;
+      font-weight: bold;
+      color: #333;
+      text-align: center;
+    }
+
+    .review-item {
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+    }
+
+    .correct { color: green; font-weight: bold; }
+    .incorrect { color: red; font-weight: bold; }
+
+    @media (max-width:700px) {
+      .quiz-container { width: 90%; padding: 15px; }
+      header { font-size: 1.2em; }
+      button { width: 100%; margin: 8px 0;font-size: 1em; }
+      header {font-size: 1.2em;padding: 10px 0;}
+      h2 {font-size: 1.1em;}
+      
+      .option label {font-size: 0.95em;}
+    }
+  </style>
+</head>
+<body>
+  <header>Programmers' Quiz
+    <h6>Test Yourself</h6>
+  </header>
+  
+  <div class="quiz-container" id="quiz-container">
+    <h2 id="question">Question text</h2>
+    <div id="options"></div>
+    <p id="message" style="color:red; display:none;">Please select an answer!</p>
+
+    <div class="buttons">
+      <button id="prevBtn" style="display:none;">Previous</button>
+      <button id="nextBtn">Next</button>
+    </div>
+  </div>
+
+  <script>
+    
+    const quizData = [
+      { question: "1. What does HTML stand for?",
+        options: ["Hyper Text Markup Language", "High Text Making Language", "Hyper Transfer Making Language", "Home Tool Markup Language"],
+        answer: "Hyper Text Markup Language"
+      },
+      { question: "2. What does CSS stand for?",
+        options: ["Cascading Style Sheets", "Creative Style System", "Computer Style Syntax", "Colorful Style Sheets"],
+        answer: "Cascading Style Sheets"
+      },
+      { question: "3. Which language is used to add interactivity to a webpage?",
+        options: ["Python", "JavaScript", "HTML", "C++"],
+        answer: "JavaScript"
+      },
+      { question: "4. Inside which HTML element do we put the JavaScript?",
+        options: ["<script>", "<js>", "<javascript>", "<code>"],
+        answer: "<script>"
+      },
+      { question: "5. What symbol is used for single-line comments in JavaScript?",
+        options: ["//", "/*", "#", "<!-- -->"],
+        answer: "//"
+      },
+      { question: "6. In JavaScript, arrays are enclosed within which brackets?",
+        options: ["{}", "[]", "()", "<>"],
+        answer: "[]"
+      },
+      { question: "7. JavaScript is case-sensitive. (True/False)",
+        options: ["True", "False"],
+        answer: "True"
+      },
+      { question: "8. The 'alert()' function is used to display a message box. (True/False)",
+        options: ["True", "False"],
+        answer: "True"
+      },
+      { question: "9. In JavaScript, 'var' and 'let' can be used interchangeably with no difference. (True/False)",
+        options: ["True", "False"],
+        answer: "False"
+      },
+      { question: "10. Which HTML tag is used to link an external JavaScript file?",
+        options: ["<link>", "<script>", "<jsfile>", "<src>"],
+        answer: "<script>"
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    const userAnswers = new Array(quizData.length).fill(null);
+
+    const questionEl = document.getElementById('question');
+    const optionsEl = document.getElementById('options');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const messageEl = document.getElementById('message');
+    const container = document.getElementById('quiz-container');
+
+    
+    function createOptionElement(optionText) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'option';
+
+      const label = document.createElement('label');
+
+      const input = document.createElement('input');
+      input.type = 'radio';
+      input.name = 'answer';
+      input.value = optionText; 
+     
+      const text = document.createTextNode(' ' + optionText);
+
+      label.appendChild(input);
+      label.appendChild(text);
+      wrapper.appendChild(label);
+      return wrapper;
+    }
+
+    function loadQuestion() {
+      messageEl.style.display = 'none';
+      const q = quizData[currentQuestion];
+      questionEl.textContent = q.question;
+      optionsEl.innerHTML = ''; 
+
+      q.options.forEach(option => {
+        const optEl = createOptionElement(option);
+        optionsEl.appendChild(optEl);
+      });
+
+      if (userAnswers[currentQuestion] !== null) {
+        const inputs = optionsEl.querySelectorAll('input[name="answer"]');
+        inputs.forEach(inp => {
+          if (inp.value === userAnswers[currentQuestion]) inp.checked = true;
+        });
+      }
+
+      prevBtn.style.display = currentQuestion === 0 ? 'none' : 'inline-block';
+      nextBtn.textContent = currentQuestion === quizData.length - 1 ? 'Finish' : 'Next';
+    }
+
+    nextBtn.addEventListener('click', () => {
+      const selected = document.querySelector('input[name="answer"]:checked');
+      if (!selected) {
+        messageEl.style.display = 'block';
+        return;
+      }
+
+      userAnswers[currentQuestion] = selected.value;
+
+      if (currentQuestion < quizData.length - 1) {
+        currentQuestion++;
+        loadQuestion();
+      } else {
+        calculateScore();
+        showScore();
+      }
+    });
+
+    prevBtn.addEventListener('click', () => {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        loadQuestion();
+      }
+    });
+
+    function calculateScore() {
+      score = 0;
+      quizData.forEach((q, i) => {
+        if (userAnswers[i] === q.answer) score++;
+      });
+    }
+
+    function showScore() {
+      container.innerHTML = '';
+
+      const h2 = document.createElement('h2');
+      h2.textContent = 'Quiz Completed!';
+      container.appendChild(h2);
+
+      const pScore = document.createElement('p');
+      pScore.className = 'score';
+      pScore.textContent = `Your Score: ${score} / ${quizData.length}`;
+      container.appendChild(pScore);
+
+      const btnDiv = document.createElement('div');
+      btnDiv.className = 'buttons';
+
+      const restartBtn = document.createElement('button');
+      restartBtn.textContent = 'Restart Quiz';
+      restartBtn.addEventListener('click', () => location.reload());
+
+      const reviewBtn = document.createElement('button');
+      reviewBtn.textContent = 'Review Answers';
+      reviewBtn.addEventListener('click', showReview);
+
+      btnDiv.appendChild(restartBtn);
+      btnDiv.appendChild(reviewBtn);
+      container.appendChild(btnDiv);
+    }
+
+    function showReview() {
+      container.innerHTML = '';
+
+      const h2 = document.createElement('h2');
+      h2.textContent = 'Review Answers';
+      container.appendChild(h2);
+
+      quizData.forEach((q, i) => {
+        const div = document.createElement('div');
+        div.className = 'review-item';
+
+        const qP = document.createElement('p');
+        const qStrong = document.createElement('strong');
+        qStrong.textContent = q.question;
+        qP.appendChild(qStrong);
+        div.appendChild(qP);
+
+        const userAnsP = document.createElement('p');
+        const userLabel = document.createElement('span');
+        const userText = userAnswers[i] === null ? 'No Answer' : userAnswers[i];
+        userLabel.textContent = userText;
+        const isCorrect = userAnswers[i] === q.answer;
+        userLabel.className = isCorrect ? 'correct' : 'incorrect';
+        userAnsP.appendChild(document.createTextNode('Your answer: '));
+        userAnsP.appendChild(userLabel);
+        div.appendChild(userAnsP);
+
+        const correctP = document.createElement('p');
+        correctP.appendChild(document.createTextNode('Correct answer: '));
+        const correctSpan = document.createElement('span');
+        correctSpan.className = 'correct';
+        correctSpan.textContent = q.answer;
+        correctP.appendChild(correctSpan);
+        div.appendChild(correctP);
+
+        container.appendChild(div);
+      });
+
+      const btnDiv = document.createElement('div');
+      btnDiv.className = 'buttons';
+      const finishBtn = document.createElement('button');
+      finishBtn.textContent = 'Finish Review';
+      finishBtn.addEventListener('click', showScore);
+      btnDiv.appendChild(finishBtn);
+      container.appendChild(btnDiv);
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
